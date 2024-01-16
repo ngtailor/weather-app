@@ -97,7 +97,6 @@ function Weather() {
       const response = await axios.get(apiUrl, config)
 
       if (response.status === 200) {
-        console.log(response)
         setWeather(response.data.location);
         setWeatherCurrent(response.data.current)
         setWeatherError('');
@@ -105,7 +104,6 @@ function Weather() {
         setWeatherError(`Error: ${response.data.error.message}`);
       }
     } catch (error) {
-      console.error('Error fetching weather data:', error);
       setWeatherError('Error fetching weather data.');
     }
    
