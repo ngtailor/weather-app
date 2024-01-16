@@ -25,6 +25,7 @@ body {
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin: 20px;
 }
 label {
   display: block;
@@ -69,4 +70,11 @@ h2 {
 p {
   margin: 8px 0;
   color: #ffffff;
+}
+
+/* Responsive Styles for mobile  */
+@media screen and (max-width: 600px) {
+  .container {
+    margin: 10px;
+  }
 }

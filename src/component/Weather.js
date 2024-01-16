@@ -82,6 +82,8 @@ function Weather() {
     // call api for current weather and  latitude or longitude
     if (!validateLatitude(latitude) || !validateLongitude(longitude)) {
       setWeatherError('Invalid latitude or longitude. Please enter valid values.');
+      setWeather(null)
+      setWeatherCurrent(null)
       return;
     }
 
