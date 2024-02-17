@@ -20,7 +20,6 @@ export const CoordinatesProvider = ({ children }) => {
     localStorage.setItem('lastLongitude', longitude);
   }, [latitude, longitude]);
 
-
   // set latitude and longitude state by call back function 
   const setCoordinates = (newLatitude, newLongitude) => {
     setLatitude(newLatitude);

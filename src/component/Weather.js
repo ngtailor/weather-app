@@ -2,10 +2,11 @@
 import React, { useState,useEffect } from 'react'
 import axios from 'axios'
 import { useCoordinates } from './CoordinatesContext';
+import ShowWeather from './ShowWeather.js'
 
 function Weather() {
 
-    const { latitude, longitude, setCoordinates } = useCoordinates();
+  const { latitude, longitude, setCoordinates } = useCoordinates();
   const [latitudeError, setLatitudeError] = useState('');
   const [longitudeError, setLongitudeError] = useState('');
   const [weather, setWeather] = useState(null);
@@ -19,12 +20,20 @@ function Weather() {
     if (latitude && longitude) {
       getWeather();
     }
-    else{
-        setWeather(null)
-        setWeatherCurrent(null)
-    }
-  }, [latitude, longitude]);
+  }, []);
 
+
+  useEffect(() => {
+    // api call when latitude and longitude is input or change
+    if (latitude.trim().length === 0 || longitude.trim().length=== 0) {
+      console.log(latitude.trim().length)
+      setWeather(null)
+      setWeatherCurrent(null)
+    }
+  }, [latitude,longitude]);
+
+
+ 
   const validateLatitude = (value) => {
     // check validation for latitude 
     const lat = parseFloat(value);
@@ -50,11 +59,13 @@ function Weather() {
   const handleLatitudeChange = (e) => {
     const newLatitude = e.target.value;
     setCoordinates(newLatitude, longitude);
+   
   };
 
   const handleLongitudeChange = (e) => {
     const newLongitude = e.target.value;
     setCoordinates(latitude, newLongitude);
+   
   };
 
   const getCurrentLocation = () => {
@@ -100,8 +111,6 @@ function Weather() {
         setWeather(response.data.location);
         setWeatherCurrent(response.data.current)
         setWeatherError('');
-      } else {
-        setWeatherError(`Error: ${response.data.error.message}`);
       }
     } catch (error) {
       setWeatherError('Error fetching weather data.');
@@ -125,22 +134,11 @@ function Weather() {
 
       <button onClick={getCurrentLocation}>Get Current Location</button>
       <button onClick={getWeather}>Get Current Weather</button>
+      {weather && weatherCurrent ?
+        <ShowWeather dataFirst={weather} dataSecond ={weatherCurrent} />
+        :
+        <p style={{ color: 'red' }}>{weatherError}</p>}
       
-      {weather && weatherCurrent && (
-        
-        <div className='weather-info '>
-        <p>Location Name:{weather.name}</p>
-        <p>Region:{weather.region}</p>
-        <p>Country:{weather.country}</p>
-        <p>Celsius: {weatherCurrent.temp_c}</p>
-        <p>Fahrenheit:{weatherCurrent.temp_f}</p>
-        <p>Humidity:{weatherCurrent.humidity}</p>
-        <p>feels like: {weatherCurrent.feelslike_c}</p>
-        <p> wind speed:{weatherCurrent.wind_kph}</p>
-        </div> 
-      )}
-
-      {weatherError && <p style={{ color: 'red' }}>{weatherError}</p>}
     </div>
   );
 };
